@@ -3,10 +3,22 @@ package main
 import "fmt"
 
 func main() {
-	var i int = 100
-	var i2 int64 = 200
-	fmt.Println(i)
-	fmt.Printf("%T\n", i)
-	fmt.Printf("%T\n", int32(i2))
-	fmt.Println(i + int(i2))
+	var fl64 float64 = 3.14
+	fmt.Println(fl64)
+
+	fl := 3.14 // 自動だとfloat64型になる
+	fmt.Printf("%T\n", fl)
+
+	var fl32 float32 = 3.14 // あまり使わない
+	fmt.Printf("%T\n", fl32)
+
+	zero := 0.0
+	pinf := 1.0 / zero
+	fmt.Println(pinf)
+
+	ninf := -1.0 / zero
+	fmt.Println(ninf)
+
+	nan := zero / zero
+	fmt.Println(nan)
 }
