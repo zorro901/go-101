@@ -1,42 +1,36 @@
 package main
 
-import (
-	"fmt"
-	"strconv"
+import "fmt"
+
+const Pi = 3.14
+
+const (
+	URL      = "https://www.google.com"
+	SiteName = "Google"
 )
 
+const (
+	A = 1
+	B
+	C
+	D = "A"
+	E
+	F
+)
+
+const (
+	c0 = iota
+	c1
+	c2
+)
+
+// var Big int = 9223372036854775807 + 1 // overflow
+const Big = 9223372036854775807 + 1
+
 func main() {
-	//var i int = 1
-	//fl64 := float64(i)
-	//fmt.Printf("%T\n", i)
-	//fmt.Printf("%T\n", fl64)
-	//
-	//i2 := int(fl64)
-	//fmt.Printf("%T\n", i2)
-	//
-	//fl := 10.5
-	//fmt.Println(int(fl)) // 10 切り捨てになる
-
-	var s string = "hello"
-	fmt.Printf("%T\n", s)
-
-	//i, _ := strconv.Atoi(s)
-	i, err := strconv.Atoi("s")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(i)
-	fmt.Printf("%T\n", i)
-
-	var i2 int = 200
-	s2 := strconv.Itoa(i2)
-	fmt.Println(s2)
-	fmt.Printf("%T\n", s2)
-
-	var h string = "hello"
-	b := []byte(h)
-	fmt.Println(b)
-
-	h2 := string(b)
-	fmt.Println(h2)
+	fmt.Println(Pi)
+	fmt.Println(URL, SiteName)
+	fmt.Println(A, B, C, D, E, F)
+	fmt.Println(Big - 1)
+	fmt.Println(c0, c1, c2)
 }
