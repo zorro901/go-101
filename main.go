@@ -3,13 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	n := 0
-	n += 4
-	n++
-	n--
-	fmt.Println(n)
+	fmt.Println(true && false == true)
+	fmt.Println(true && true == true)
+	fmt.Println(true && false == false)
 
-	s := "hello"
-	s += " world"
-	fmt.Println(s)
+	fmt.Println(true || false == true)
+	fmt.Println(false || false == true)
+
+	fmt.Println(!true)
+	fmt.Println(!false)
 }
