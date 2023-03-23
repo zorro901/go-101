@@ -1,22 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
-func sub() {
-	for {
-		fmt.Println("Sub loop")
-		time.Sleep(100 * time.Millisecond)
-	}
+func init() {
+	fmt.Println("init")
+}
+
+func init() {
+	fmt.Println("init2")
 }
 
 func main() {
-	go sub()
-	go sub()
-	for {
-		fmt.Println("Main loop")
-		time.Sleep(200 * time.Millisecond)
-	}
+	fmt.Println("Main")
 }
