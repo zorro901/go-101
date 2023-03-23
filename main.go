@@ -3,52 +3,43 @@ package main
 import "fmt"
 
 func main() {
-	//i := 0
-	//for {
-	//	i++
-	//	if i == 3 {
-	//		break
-	//	}
-	//	println("Hello, world!")
+	//n := 1
+	//switch n {
+	//case 1, 2:
+	//	println("1 or 2")
+	//case 3, 4:
+	//	println("3 or 4")
+	//default:
+	//	println("default")
 	//}
 
-	//point := 0
-	//for point < 10 {
-	//	println(point)
-	//	point++
+	//switch n := 2; n {
+	//case 1, 2:
+	//	fmt.Println("1 or 2")
+	//case 3, 4:
+	//	fmt.Println("3 or 4")
+	//default:
+	//	fmt.Println("default")
 	//}
 
-	//for i := 0; i < 10; i++ {
-	//	if i == 3 {
-	//		continue
-	//	}
-	//	if i == 6 {
-	//		break
-	//	}
-	//	println(i)
+	//n := 6
+	//switch {
+	//case n > 0 && n < 4:
+	//	fmt.Println("n>0 && n<4")
+	//case n > 3 && n < 7:
+	//	fmt.Println("n>3 && n<7")
+	//default:
+	//	fmt.Println("default")
 	//}
 
-	//arr := [3]int{1, 2, 3}
-	//for i := 0; i < len(arr); i++ {
-	//	println(arr[i])
-	//}
-
-	//arr := [3]int{1, 2, 3}
-	//for i, v := range arr {
-	//	println(i, v)
-	//}
-
-	//sl := []string{"a", "b", "c"}
-	//for i, v := range sl {
-	//	println(i, v)
-	//}
-
-	m := map[string]int{
-		"a": 1,
-		"b": 2,
-		"c": 3,
-	}
-	for k, v := range m {
-		fmt.Println(k, v)
+	switch n := 2; n {
+	case 1, 2:
+		fmt.Println("1 or 2")
+	case 3, 4:
+		fmt.Println("3 or 4")
+	//case n>3 && n<6:
+	//	fmt.Println("n>3 && n<6")
+	default:
+		fmt.Println("default")
 	}
 }
