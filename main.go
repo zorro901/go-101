@@ -1,13 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
+
+func sub() {
+	for {
+		fmt.Println("Sub loop")
+		time.Sleep(100 * time.Millisecond)
+	}
+}
 
 func main() {
-	defer func() {
-		if x := recover(); x != nil {
-			fmt.Println("Recovered in f", x)
-		}
-	}()
-	panic("runtime error")
-	fmt.Println("Hello, world!")
+	go sub()
+	go sub()
+	for {
+		fmt.Println("Main loop")
+		time.Sleep(200 * time.Millisecond)
+	}
 }
