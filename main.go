@@ -3,30 +3,28 @@ package main
 import "fmt"
 
 func main() {
-	var sl []int
-	sl = append(sl, 1)
+	sl := []int{100, 200}
 	fmt.Println(sl)
 
-	var sl2 []int = []int{1, 2}
+	sl = append(sl, 300)
+	fmt.Println(sl)
+
+	sl = append(sl, 400, 500)
+	fmt.Println(sl)
+
+	sl2 := make([]int, 5)
 	fmt.Println(sl2)
 
-	sl3 := []string{"a", "b", "c"}
-	fmt.Println(sl3)
+	fmt.Println(len(sl2))
 
-	sl4 := make([]int, 5)
-	fmt.Println(sl4)
+	fmt.Println(cap(sl2))
 
-	sl2[0] = 1000
-	fmt.Println(sl2)
+	sl3 := make([]int, 5, 10)
+	fmt.Println(len(sl3))
+	fmt.Println(cap(sl3))
 
-	sl5 := []int{1, 2, 3, 4, 5}
-	fmt.Println(sl5)
+	sl3 = append(sl3, 1, 2, 3, 4, 5, 6, 7)
 
-	fmt.Println(sl5[0])
-	fmt.Println(sl5[1:3])
-	fmt.Println(sl5[:2])
-	fmt.Println(sl5[2:])
-	fmt.Println(sl5[:])
-	fmt.Println(sl5[len(sl5)-1])
-	fmt.Println(sl5[1 : len(sl5)-1])
+	fmt.Println(len(sl3))
+	fmt.Println(cap(sl3)) // 20
 }
