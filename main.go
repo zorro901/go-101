@@ -2,43 +2,56 @@ package main
 
 import "fmt"
 
-func Double(i int) {
-	fmt.Println(i * 2)
+type User struct {
+	Name string
+	Age  int
+	//X, Y int
 }
 
-func DoubleV2(i *int) {
-	*i *= 2
+func UpdateUser(user User) {
+	user.Name = "A"
+	user.Age = 1000
 }
 
-func DoubleV3(s []int) {
-	for i, v := range s {
-		s[i] = v * 2
-	}
+func UpdateUser2(user *User) {
+	user.Name = "A"
+	user.Age = 1000
 }
 
 func main() {
-	var n int = 100
-	fmt.Println(n) // 100
-	fmt.Println(&n)
-	Double(n)       // 上のnとは別の値を関数内に持つ
-	fmt.Println(n)  // 100
-	fmt.Println(&n) // ポインタは変わらない
+	var user1 User
+	user1.Name = "user1"
+	user1.Age = 10
+	fmt.Println(user1)
 
-	var p *int = &n
-	fmt.Println(p)
-	fmt.Println(*p) // アドレスが指す実態の値を表示
+	user2 := User{}
+	user2.Name = "Jane"
+	fmt.Println(user2)
 
-	*p = 300
-	fmt.Println(n)
-	n = 200
-	fmt.Println(*p)
+	user3 := User{
+		Name: "Bob",
+	}
+	fmt.Println(user3)
 
-	// 参照渡しでメモリの値を直接書き換える
-	DoubleV2(&n)
-	fmt.Println(n)
+	user4 := User{
+		"user4", 40,
+	}
+	fmt.Println(user4)
 
-	// 参照型は元々、参照渡しになる
-	var sl []int = []int{1, 2, 3}
-	DoubleV3(sl)
-	fmt.Println(sl)
+	user5 := User{
+		Name: "Bob",
+	}
+	fmt.Println(user5)
+
+	user6 := new(User) // ポインタ型で宣言できる
+	fmt.Println(user6)
+
+	user7 := &User{} // ポインタ型でこちらの方が書かれやすい
+	fmt.Println(user7)
+
+	UpdateUser(user1)
+	UpdateUser2(user7)
+
+	fmt.Println(user1)
+	fmt.Println(user7)
 }
