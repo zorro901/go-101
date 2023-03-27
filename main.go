@@ -2,29 +2,19 @@ package main
 
 import "fmt"
 
-type User struct {
-	Name string
-	Age  int
+type MyInt int
+
+func (mi MyInt) Print() {
+	fmt.Println(mi)
 }
 
 func main() {
-	m := map[int]User{
-		1: User{Name: "Alice", Age: 18},
-		2: User{Name: "Bob", Age: 20},
-	}
-	fmt.Println(m)
+	var mi MyInt
+	fmt.Println(mi)
+	fmt.Printf("%T\n", mi)
 
-	m2 := map[User]string{
-		User{Name: "Alice", Age: 18}: "Tokyo",
-		User{Name: "Bob", Age: 20}:   "London",
-	}
-	fmt.Println(m2)
+	//i := 100
+	//fmt.Println(mi + i) // 独自型と計算は出来ない
 
-	m3 := make(map[int]User)
-	m3[1] = User{Name: "Alice", Age: 18}
-	fmt.Println(m3)
-
-	for k, v := range m3 {
-		fmt.Println(k, v)
-	}
+	mi.Print()
 }
