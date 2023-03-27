@@ -2,60 +2,43 @@ package main
 
 import "fmt"
 
+func Double(i int) {
+	fmt.Println(i * 2)
+}
+
+func DoubleV2(i *int) {
+	*i *= 2
+}
+
+func DoubleV3(s []int) {
+	for i, v := range s {
+		s[i] = v * 2
+	}
+}
+
 func main() {
-	ch1 := make(chan int, 2)
-	ch2 := make(chan string, 2)
+	var n int = 100
+	fmt.Println(n) // 100
+	fmt.Println(&n)
+	Double(n)       // 上のnとは別の値を関数内に持つ
+	fmt.Println(n)  // 100
+	fmt.Println(&n) // ポインタは変わらない
 
-	// あるチャネルで受信出来ないと別のチャネルも受信できなくなる
-	ch2 <- "A"
-	//
-	//v1 := <-ch1
-	//v2 := <-ch2
-	//fmt.Println(v1)
-	//fmt.Println(v2)
+	var p *int = &n
+	fmt.Println(p)
+	fmt.Println(*p) // アドレスが指す実態の値を表示
 
-	// switch文との違いは実行できるチャネルからランダムに実行される
-	select {
-	case v1 := <-ch1:
-		fmt.Println(v1 + 1000)
-	case v2 := <-ch2:
-		fmt.Println(v2 + "!")
-	default:
-		fmt.Println("default")
-	}
+	*p = 300
+	fmt.Println(n)
+	n = 200
+	fmt.Println(*p)
 
-	ch3 := make(chan int)
-	ch4 := make(chan int)
-	ch5 := make(chan int)
+	// 参照渡しでメモリの値を直接書き換える
+	DoubleV2(&n)
+	fmt.Println(n)
 
-	// receiver
-	go func() {
-		for {
-			i := <-ch3
-			ch4 <- i * 2
-		}
-	}()
-
-	go func() {
-		for {
-			i2 := <-ch4
-			ch5 <- i2 - 1
-		}
-	}()
-
-	n := 0
-LOOP:
-	for {
-		select {
-		case ch3 <- n:
-			n++
-		case i3 := <-ch5:
-			fmt.Println("received", i3)
-		default:
-			if n > 100 {
-				break LOOP
-			}
-		}
-
-	}
+	// 参照型は元々、参照渡しになる
+	var sl []int = []int{1, 2, 3}
+	DoubleV3(sl)
+	fmt.Println(sl)
 }
