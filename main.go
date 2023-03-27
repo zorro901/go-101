@@ -1,22 +1,36 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	. "fmt" // 短縮できるが非推奨
+	f "fmt"
+	"go-101/foo"
+)
 
-//type Stringer interface {
-//	String() string
-//}
-
-type Point struct {
-	A int
-	B string
+func appName() string {
+	const AppName = "GoApp"
+	var Version string = "1.0.0"
+	return AppName + " " + Version
 }
 
-// 表示形式のカスタマイズ
-func (p *Point) String() string {
-	return fmt.Sprintf("<<%v, %v>>", p.A, p.B)
+func Do(s string) (b string) {
+	//var b string = s // 返り値で宣言されているので重複宣言になる
+	b = s
+	{
+		b := "BBBB" // ブロック内では再定義可能
+		fmt.Println(b)
+	}
+	fmt.Println(b)
+	return b
 }
 
 func main() {
-	p := &Point{100, "ABC"}
-	fmt.Println(p)
+	fmt.Println(foo.Max)
+	Println(foo.Max)
+	f.Println(foo.ReturnMin())
+
+	fmt.Println(appName())
+
+	fmt.Println(Do("hello"))
+
 }
