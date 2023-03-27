@@ -7,15 +7,31 @@ type User struct {
 	Age  int
 }
 
-func NewUser(name string, age int) *User {
-	return &User{
-		Name: name,
-		Age:  age,
-	}
-}
+type Users []*User // こちらの方が望ましい
+//type Users struct {
+//	Users []*User
+//}
 
 func main() {
-	u1 := NewUser("Alice", 20)
-	fmt.Println(u1)
-	fmt.Println(*u1)
+	user1 := User{
+		Name: "John",
+		Age:  30,
+	}
+	user2 := User{
+		Name: "Jane",
+		Age:  20,
+	}
+	users := Users{}
+	users = append(users, &user1)
+	users = append(users, &user2)
+	for _, user := range users {
+		fmt.Println(*user)
+	}
+
+	users2 := make([]*User, 0)
+	users2 = append(users2, &user1, &user2)
+	for _, user := range users2 {
+		fmt.Println(*user)
+	}
+
 }
