@@ -2,51 +2,50 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"math"
 )
 
 func main() {
-	t := time.Now()
-	fmt.Println(t)
+	// 円周率
+	fmt.Println(math.Pi)
 
-	t2 := time.Date(2020, 1, 1, 0, 0, 0, 0, time.Local)
-	fmt.Println(t2)
-	fmt.Println(t2.Year())
-	fmt.Println(t2.YearDay())
-	fmt.Println(t2.Month())
-	fmt.Println(t2.Weekday())
-	fmt.Println(t2.Day())
-	fmt.Println(t2.Hour())
-	fmt.Println(t2.Minute())
-	fmt.Println(t2.Second())
-	fmt.Println(t2.Nanosecond())
-	fmt.Println(t2.Zone())
+	// 2の平方根
+	fmt.Println(math.Sqrt2)
 
-	fmt.Println(time.Hour)
-	fmt.Printf("%T\n", time.Hour)
-	fmt.Println(time.Minute)
-	fmt.Println(time.Second)
-	fmt.Println(time.Millisecond)
-	fmt.Println(time.Microsecond)
-	fmt.Println(time.Nanosecond)
+	// float32の最大値 float64版もある
+	fmt.Println(math.MaxFloat32)
+	// float32で表現可能な0ではない最小値
+	fmt.Println(math.SmallestNonzeroFloat32)
+	// int64
+	fmt.Println(math.MaxInt64)
+	fmt.Println(math.MinInt64)
 
-	d, _ := time.ParseDuration("2h30m")
-	fmt.Println(d)
+	// 絶対値
+	fmt.Println(math.Abs(100))
+	fmt.Println(math.Abs(-100))
 
-	// 2分15秒後の時間を生成
-	t3 := time.Now()
-	t3 = t3.Add(2*time.Minute + 15*time.Second)
-	fmt.Println(t3)
+	// 累乗
+	fmt.Println(math.Pow(0, 2))
+	fmt.Println(math.Pow(2, 2))
 
-	// t3-t(2分15秒後の時間-現在時刻)
-	d2 := t3.Sub(t)
-	fmt.Println(d2)
+	// 平方根、立方根
+	fmt.Println(math.Sqrt(2))
+	fmt.Println(math.Cbrt(8))
 
-	fmt.Println(t.Before(t3))
-	fmt.Println(t.After(t3))
-	fmt.Println(t3.Before(t))
-	fmt.Println(t3.After(t))
+	// 最大値、最小値
+	fmt.Println(math.Max(1, 2))
+	fmt.Println(math.Min(1, 2))
 
-	time.Sleep(5 * time.Second)
-	fmt.Println("5秒停止後")
+	// 数値の正負を問わず、小数点以下を切り捨てる
+	fmt.Println(math.Trunc(3.14))
+	fmt.Println(math.Trunc(-3.14))
+
+	// 引数の数値より小さい最大の整数を返す
+	fmt.Println(math.Floor(3.14))
+	fmt.Println(math.Floor(-3.14))
+
+	// 引数の数値より大きい最小の整数を返す
+	fmt.Println(math.Ceil(3.14))
+	fmt.Println(math.Ceil(-3.14))
+
 }
