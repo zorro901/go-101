@@ -1,24 +1,24 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"math/rand"
-	"time"
 )
 
 func main() {
-	//rand.Seed(256) // global scopeのため非推奨
-	r := rand.New(rand.NewSource(256))
-	// 乱数生成
-	fmt.Println(r.Float64())
-	fmt.Println(r.Float64())
-	fmt.Println(r.Float64())
+	var (
+		max int
+		msg string
+		x   bool
+	)
 
-	// 現在の時刻をシードに使った疑似乱数の生成
-	r = rand.New(rand.NewSource(time.Now().UnixNano()))
-	fmt.Println(r.Intn(100)) // 0〜99の範囲の乱数を生成
-	fmt.Println(r.Int())
-	fmt.Println(r.Int31())
-	fmt.Println(r.Uint32())
+	// オプション
+	flag.IntVar(&max, "n", 32, "最大値")
+	flag.StringVar(&msg, "m", "", "処理メッセージ")
+	flag.BoolVar(&x, "x", false, "拡張オプション") // 入力がなければfalse
 
+	// コマンドラインをパース
+	flag.Parse()
+
+	fmt.Println(max, msg, x)
 }
