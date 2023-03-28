@@ -2,63 +2,51 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"log"
-	"os"
+	"time"
 )
 
 func main() {
-	//os.Exit(1)
-	//fmt.Println("Hello, world!") // 実行されない
+	t := time.Now()
+	fmt.Println(t)
 
-	//defer func() {
-	//	fmt.Println("defer") // 実行されない
-	//}()
-	//os.Exit(0)
+	t2 := time.Date(2020, 1, 1, 0, 0, 0, 0, time.Local)
+	fmt.Println(t2)
+	fmt.Println(t2.Year())
+	fmt.Println(t2.YearDay())
+	fmt.Println(t2.Month())
+	fmt.Println(t2.Weekday())
+	fmt.Println(t2.Day())
+	fmt.Println(t2.Hour())
+	fmt.Println(t2.Minute())
+	fmt.Println(t2.Second())
+	fmt.Println(t2.Nanosecond())
+	fmt.Println(t2.Zone())
 
-	//_, err := os.Open("test.txt")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
+	fmt.Println(time.Hour)
+	fmt.Printf("%T\n", time.Hour)
+	fmt.Println(time.Minute)
+	fmt.Println(time.Second)
+	fmt.Println(time.Millisecond)
+	fmt.Println(time.Microsecond)
+	fmt.Println(time.Nanosecond)
 
-	//fmt.Println(os.Args[0])
-	//fmt.Println(os.Args[1])
-	//
-	//fmt.Printf("length=%d\n", len(os.Args))
-	//for i, arg := range os.Args {
-	//	fmt.Printf("arg[%d]=%s\n", i, arg)
-	//}
+	d, _ := time.ParseDuration("2h30m")
+	fmt.Println(d)
 
-	f, err := os.Open("test.txt")
-	if err != nil {
-		//log.Fatalln(err)
-		f, err = os.Create("test.txt")
-		f.Write([]byte("Hello, world!"))
-		f.WriteAt([]byte("Golang"), 6) // 6文字目から書き込み
-		f.Seek(0, io.SeekEnd)          // 書き込み位置を末尾に移動
-		f.WriteString("You're welcome!")
-	}
-	fmt.Println("ファイルを閉じます")
-	defer f.Close()
+	// 2分15秒後の時間を生成
+	t3 := time.Now()
+	t3 = t3.Add(2*time.Minute + 15*time.Second)
+	fmt.Println(t3)
 
-	bs := make([]byte, 128)
+	// t3-t(2分15秒後の時間-現在時刻)
+	d2 := t3.Sub(t)
+	fmt.Println(d2)
 
-	n, err := f.Read(bs)
-	fmt.Println(n)
-	fmt.Println(string(bs))
-	bs2 := make([]byte, 128)
-	nm, err := f.ReadAt(bs2, 10)
-	fmt.Println(nm)
-	fmt.Println(string(bs2))
+	fmt.Println(t.Before(t3))
+	fmt.Println(t.After(t3))
+	fmt.Println(t3.Before(t))
+	fmt.Println(t3.After(t))
 
-	f, err = os.OpenFile("test.txt", os.O_RDONLY|os.O_CREATE, 0666)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer f.Close()
-	bs = make([]byte, 128)
-	n, err = f.Read(bs)
-	fmt.Println(n)
-	fmt.Println(string(bs))
-
+	time.Sleep(5 * time.Second)
+	fmt.Println("5秒停止後")
 }
