@@ -1,24 +1,24 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"os"
 )
 
 func main() {
-	var (
-		max int
-		msg string
-		x   bool
-	)
+	s := fmt.Sprint("Hello")
+	s1 := fmt.Sprintf("%v\n", "Hello")
+	s2 := fmt.Sprintln("Hello")
+	fmt.Println(s)
+	fmt.Println(s1)
+	fmt.Println(s2)
 
-	// オプション
-	flag.IntVar(&max, "n", 32, "最大値")
-	flag.StringVar(&msg, "m", "", "処理メッセージ")
-	flag.BoolVar(&x, "x", false, "拡張オプション") // 入力がなければfalse
+	fmt.Fprint(os.Stdout, "Hello")
+	fmt.Fprintf(os.Stdout, "Hello")
+	fmt.Fprintln(os.Stdout, "Hello")
 
-	// コマンドラインをパース
-	flag.Parse()
+	f, _ := os.Create("test1.txt")
+	defer f.Close()
+	fmt.Fprint(f, "Hello")
 
-	fmt.Println(max, msg, x)
 }
