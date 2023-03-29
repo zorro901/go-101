@@ -1,24 +1,45 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 )
 
 func main() {
-	s := fmt.Sprint("Hello")
-	s1 := fmt.Sprintf("%v\n", "Hello")
-	s2 := fmt.Sprintln("Hello")
-	fmt.Println(s)
-	fmt.Println(s1)
-	fmt.Println(s2)
+	// 標準出力させる
+	log.SetOutput(os.Stdout)
 
-	fmt.Fprint(os.Stdout, "Hello")
-	fmt.Fprintf(os.Stdout, "Hello")
-	fmt.Fprintln(os.Stdout, "Hello")
+	log.Print("Log\n")
+	log.Println("Log2")
+	log.Printf("Log%d\n", 3)
 
-	f, _ := os.Create("test1.txt")
-	defer f.Close()
-	fmt.Fprint(f, "Hello")
+	// 出力とともにプログラムを終了する
+	//log.Fatal("Log\n")
+	//log.Fatalln("Log2")
+	//log.Fatalf("Log%d\n", 3)
 
+	// 出力とともにプログラムを終了する
+	//log.Panic("Log\n")
+	//log.Panicln("Log2")
+	//log.Panicf("Log%d\n", 3)
+
+	// ファイルに出力する
+	//f, err := os.Create("test.log")
+	//if err != nil {
+	//	return
+	//}
+	//log.SetOutput(f)
+	//log.Print("Log\n")
+
+	log.SetFlags(log.LstdFlags | log.Ltime | log.Lmicroseconds)
+	log.Print("Log\n")
+	log.SetFlags(log.Ltime | log.Lshortfile)
+	log.SetPrefix("[LOG] ")
+	log.Print("Log\n")
+
+	logger := log.New(os.Stdout, "[LOG] ", log.Ldate|log.Ltime|log.Lshortfile)
+	_, err := os.Open("test1.log")
+	if err != nil {
+		logger.Fatalln(err)
+	}
 }
