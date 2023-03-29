@@ -1,45 +1,49 @@
 package main
 
 import (
-	"log"
-	"os"
+	"fmt"
+	"strconv"
 )
 
 func main() {
-	// 標準出力させる
-	log.SetOutput(os.Stdout)
+	bt := true
+	fmt.Printf("%T\n", strconv.FormatBool(bt))
 
-	log.Print("Log\n")
-	log.Println("Log2")
-	log.Printf("Log%d\n", 3)
+	i := strconv.FormatInt(-100, 10)
+	fmt.Printf("%v,%T\n", i, i)
 
-	// 出力とともにプログラムを終了する
-	//log.Fatal("Log\n")
-	//log.Fatalln("Log2")
-	//log.Fatalf("Log%d\n", 3)
+	i2 := strconv.Itoa(100)
+	fmt.Printf("%v,%T\n", i2, i2)
 
-	// 出力とともにプログラムを終了する
-	//log.Panic("Log\n")
-	//log.Panicln("Log2")
-	//log.Panicf("Log%d\n", 3)
+	// 浮動小数点型を文字列に変換する
+	fmt.Println(strconv.FormatFloat(123.456, 'E', -1, 64))
 
-	// ファイルに出力する
-	//f, err := os.Create("test.log")
-	//if err != nil {
-	//	return
-	//}
-	//log.SetOutput(f)
-	//log.Print("Log\n")
+	bt2, _ := strconv.ParseBool("1")
+	bt3, _ := strconv.ParseBool("t")
+	bt4, _ := strconv.ParseBool("T")
+	bt5, _ := strconv.ParseBool("TRUE")
+	bt6, _ := strconv.ParseBool("True")
+	fmt.Println(bt2, bt3, bt4, bt5, bt6)
 
-	log.SetFlags(log.LstdFlags | log.Ltime | log.Lmicroseconds)
-	log.Print("Log\n")
-	log.SetFlags(log.Ltime | log.Lshortfile)
-	log.SetPrefix("[LOG] ")
-	log.Print("Log\n")
+	bf2, _ := strconv.ParseBool("0")
+	bf3, _ := strconv.ParseBool("f")
+	bf4, _ := strconv.ParseBool("F")
+	bf5, _ := strconv.ParseBool("FALSE")
+	bf6, _ := strconv.ParseBool("False")
+	fmt.Println(bf2, bf3, bf4, bf5, bf6)
 
-	logger := log.New(os.Stdout, "[LOG] ", log.Ldate|log.Ltime|log.Lshortfile)
-	_, err := os.Open("test1.log")
-	if err != nil {
-		logger.Fatalln(err)
-	}
+	i3, _ := strconv.ParseInt("12345", 10, 0)
+	fmt.Printf("%v, %T\n", i3, i3)
+	i4, _ := strconv.ParseInt("-1", 10, 0)
+	fmt.Printf("%v, %T\n", i4, i4)
+
+	i10, _ := strconv.Atoi("123")
+	fmt.Println(i10)
+
+	fl1, _ := strconv.ParseFloat("3.14", 64)
+	fl2, _ := strconv.ParseFloat(".2", 64)
+	fl3, _ := strconv.ParseFloat("-2", 64)
+	fl4, _ := strconv.ParseFloat("1.2345e8", 64)
+	fl5, _ := strconv.ParseFloat("1.2345E8", 64)
+	fmt.Println(fl1, fl2, fl3, fl4, fl5)
 }
