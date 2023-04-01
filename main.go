@@ -1,26 +1,68 @@
 package main
 
 import (
-	"crypto/md5"
+	"encoding/json"
 	"fmt"
-	"io"
 	"log"
+	"time"
 )
 
+type A struct {
+	id int
+}
+
+type User struct {
+	ID      int       `json:"id"`
+	Name    string    `json:"name"`
+	Email   string    `json:"email"`
+	Created time.Time `json:"created"`
+	A       *A        `json:"A,omitempty"`
+}
+
+func (u *User) UnmarshalJSON(b []byte) error {
+	type User2 struct {
+		Name string
+	}
+	var u2 User2
+	err := json.Unmarshal(b, &u2)
+	if err != nil {
+		fmt.Println(err)
+	}
+	u.Name = u2.Name + "!"
+	u.ID = 555
+	u.A = &A{id: 1}
+	return err
+}
+
+func (u *User) MarshalJSON() ([]byte, error) {
+	v, err := json.Marshal(&struct {
+		Name string
+	}{
+		Name: "Mr " + u.Name,
+	})
+	return v, err
+}
+
 func main() {
-	h := md5.New()
-	//io.WriteString(h, "ABCDE")
-	if _, err := io.WriteString(h, "ABCDE"); err != nil {
+	u := new(User)
+	u.ID = 1
+	u.Name = "test"
+	u.Email = "example@example.com"
+	u.Created = time.Now()
+
+	bs, err := json.Marshal(&u)
+	if err != nil {
 		log.Fatal(err)
 	}
-	//b := []byte{12, 34, 55, 3}
-	fmt.Println(h.Sum(nil))
-	//fmt.Println(h.Sum(b))
 
-	//fmt.Println(b)
+	//fmt.Println(bs)
+	fmt.Println(string(bs))
+	//fmt.Printf("%T\n", bs) // []uint8
 
-	// %x で 16進数の文字列を生成する
-	s := fmt.Sprintf("%x", h.Sum(nil))
-	fmt.Println(s)
+	var u2 User
 
+	if err := json.Unmarshal(bs, &u2); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(u2)
 }
