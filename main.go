@@ -1,32 +1,26 @@
 package main
 
 import (
+	"crypto/md5"
 	"fmt"
-	"sync"
+	"io"
+	"log"
 )
 
 func main() {
-	wg := new(sync.WaitGroup)
-	wg.Add(3)
+	h := md5.New()
+	//io.WriteString(h, "ABCDE")
+	if _, err := io.WriteString(h, "ABCDE"); err != nil {
+		log.Fatal(err)
+	}
+	//b := []byte{12, 34, 55, 3}
+	fmt.Println(h.Sum(nil))
+	//fmt.Println(h.Sum(b))
 
-	go func() {
-		for i := 0; i < 100; i++ {
-			fmt.Println("1st Goroutine")
-		}
-		wg.Done()
-	}()
-	go func() {
-		for i := 0; i < 100; i++ {
-			fmt.Println("2nd Goroutine")
-		}
-		wg.Done()
-	}()
-	go func() {
-		for i := 0; i < 100; i++ {
-			fmt.Println("3rd Goroutine")
-		}
-		wg.Done()
-	}()
+	//fmt.Println(b)
 
-	wg.Wait()
+	// %x で 16進数の文字列を生成する
+	s := fmt.Sprintf("%x", h.Sum(nil))
+	fmt.Println(s)
+
 }
