@@ -2,48 +2,67 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"strings"
 )
 
 func main() {
-	bt := true
-	fmt.Printf("%T\n", strconv.FormatBool(bt))
+	s1 := strings.Join([]string{"A", "B", "C"}, ",")
+	s2 := strings.Join([]string{"A", "B", "C"}, "")
+	fmt.Println(s1, s2)
 
-	i := strconv.FormatInt(-100, 10)
-	fmt.Printf("%v,%T\n", i, i)
+	i1 := strings.Index("ABCDE", "A")
+	i2 := strings.Index("ABCDE", "D")
+	fmt.Println(i1, i2)
 
-	i2 := strconv.Itoa(100)
-	fmt.Printf("%v,%T\n", i2, i2)
+	i3 := strings.LastIndex("ABCDABCD", "BC")
+	fmt.Println(i3) // 5
 
-	// 浮動小数点型を文字列に変換する
-	fmt.Println(strconv.FormatFloat(123.456, 'E', -1, 64))
+	i4 := strings.IndexAny("ABC", "ABC")
+	i5 := strings.LastIndexAny("ABC", "ABC")
+	fmt.Println(i4, i5)
 
-	bt2, _ := strconv.ParseBool("1")
-	bt3, _ := strconv.ParseBool("t")
-	bt4, _ := strconv.ParseBool("T")
-	bt5, _ := strconv.ParseBool("TRUE")
-	bt6, _ := strconv.ParseBool("True")
-	fmt.Println(bt2, bt3, bt4, bt5, bt6)
+	b1 := strings.HasPrefix("ABC", "A") // 検索対象の文字列が指定対象から始まるか
+	b2 := strings.HasSuffix("ABC", "C") // 検索対象の文字列が指定対象で終わるか
+	fmt.Println("HasPrefix", b1, "HasSuffix", b2)
 
-	bf2, _ := strconv.ParseBool("0")
-	bf3, _ := strconv.ParseBool("f")
-	bf4, _ := strconv.ParseBool("F")
-	bf5, _ := strconv.ParseBool("FALSE")
-	bf6, _ := strconv.ParseBool("False")
-	fmt.Println(bf2, bf3, bf4, bf5, bf6)
+	b3 := strings.Contains("ABC", "B")      // 検索対象の文字列が含まれるか
+	b4 := strings.ContainsAny("ABCDE", "X") // 検索対象の文字列が指定のどこかで含まれるか
+	fmt.Println("Contains", b3, "ContainsAny", b4)
 
-	i3, _ := strconv.ParseInt("12345", 10, 0)
-	fmt.Printf("%v, %T\n", i3, i3)
-	i4, _ := strconv.ParseInt("-1", 10, 0)
-	fmt.Printf("%v, %T\n", i4, i4)
+	i6 := strings.Count("ABCABC", "B") // 文字列を検索対象として検索した数を返す
+	i7 := strings.Count("ABCABC", "")  // 空文字を指定した場合は全部の文字数を返す
+	fmt.Println("Count", i6, "CountAny", i7)
 
-	i10, _ := strconv.Atoi("123")
-	fmt.Println(i10)
+	s3 := strings.Repeat("ABC", 4) // 対象文字列を指定した回数だけ繰り返す
+	s4 := strings.Repeat("ABC", 0) // ゼロ回は一度も出力しない
+	fmt.Println("Repeat", s3, s4)
 
-	fl1, _ := strconv.ParseFloat("3.14", 64)
-	fl2, _ := strconv.ParseFloat(".2", 64)
-	fl3, _ := strconv.ParseFloat("-2", 64)
-	fl4, _ := strconv.ParseFloat("1.2345e8", 64)
-	fl5, _ := strconv.ParseFloat("1.2345E8", 64)
-	fmt.Println(fl1, fl2, fl3, fl4, fl5)
+	s5 := strings.Replace("AAAAAA", "A", "B", 1)  // 対象文字列を指定した文字列に置換
+	s6 := strings.Replace("AAAAAA", "A", "B", -1) // -1の場合は全ての置換
+	fmt.Println("Replace", s5, s6)
+
+	s7 := strings.Split("A,B,C,D,E", ",") // 分割した文字列を配列として返す
+	fmt.Println("Split", s7)
+	s8 := strings.SplitAfter("A,B,C,D,E", ",") // セパレータを取り除かない、カンマを付けて分割する
+	fmt.Println("SplitAfter", s8)
+	s9 := strings.SplitN("A,B,C,D,E", ",", 2) // 分割する最大数を指定する
+	fmt.Println("SplitN", s9)
+	s10 := strings.SplitAfterN("A,B,C,D,E", ",", 4) // 分割する最大数を指定して、セパレータを取り除かない
+	fmt.Println(s10)
+
+	s11 := strings.ToLower("ABC") // 全ての文字を小文字に変換
+	s12 := strings.ToLower("E")
+
+	s13 := strings.ToUpper("abc") // 全ての文字を大文字に変換
+	s14 := strings.ToUpper("e")
+	fmt.Println(s11, s12, s13, s14)
+
+	s15 := strings.TrimSpace("    -    ABC    -    ") // 文字列の前後のスペースを削除
+	s16 := strings.TrimSpace("\tABC\r\n")             // 特殊文字も削除される
+	s17 := strings.TrimSpace("　　　　ABC　　　　")           // 空白文字を削除
+	fmt.Println(s15, s16, s17)
+
+	s18 := strings.Fields("a b c") // 分割した文字列を配列として返す
+	fmt.Println(s18)
+	fmt.Println(s18[1])
 }
