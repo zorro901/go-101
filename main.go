@@ -1,19 +1,25 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"io"
+	"log"
 	"os"
 )
 
 func main() {
-	scanner := bufio.NewScanner(os.Stdin) // 入力した値を返すスキャナーを作成
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
+	f, _ := os.Open("test.txt")
+	bs1, _ := io.ReadAll(f) // 巨大なデータには適さない
+	fmt.Println(string(bs1))
 
-	if err := scanner.Err(); err != nil {
-		fmt.Println(os.Stderr)
-	}
+	//bs2, _ := ioutil.ReadFile("test.txt")
+	//fmt.Println(string(bs2))
 
+	//if err := ioutil.WriteFile("test.txt", []byte("test"), 0666); err != nil {
+	//	log.Fatalln(err)
+	//}
+
+	if err := os.WriteFile("test.txt", []byte("test1"), 0666); err != nil {
+		log.Fatalln(err)
+	}
 }
