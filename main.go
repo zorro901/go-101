@@ -2,11 +2,14 @@ package main
 
 import (
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
-var DbConnection *sql.DB
+var Db *sql.DB
+
+var err error
 
 type Person struct {
 	Name string
@@ -14,32 +17,24 @@ type Person struct {
 }
 
 func main() {
-	DbConnection, _ := sql.Open("sqlite3", "./example.sql")
-	defer DbConnection.Close()
-	//cmd := `CREATE TABLE IF NOT EXISTS persons(
-	//            name STRING,
-	//			age  INT)`
-	//_, err := DbConnection.Exec(cmd)
+	Db, err = sql.Open("postgres", "user=test_user dbname=testdb password=password sslmode=disable port=54322")
+	if err != nil {
+		log.Panic(err)
+	}
+	defer Db.Close()
+
+	//C
+	//cmd := "INSERT INTO persons (name, age) VALUES ($1, $2)"
+	//_, err := Db.Exec(cmd, "Nancy", 20)
 	//if err != nil {
 	//	log.Fatalln(err)
 	//}
 
-	//cmd := "INSERT INTO persons (name, age) VALUES (?, ?)"
-	//_, err := DbConnection.Exec(cmd, "Nancy", 20)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-
-	//cmd := "UPDATE persons SET age = ? WHERE name = ?"
-	//_, err := DbConnection.Exec(cmd, 25, "Nancy")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-
-	//cmd := "SELECT * FROM persons where age = ?"
-	//row := DbConnection.QueryRow(cmd, 25)
+	//R
+	//cmd := "SELECT * FROM persons where age = $1"
+	//row := Db.QueryRow(cmd, 20)
 	//var p Person
-	//err := row.Scan(&p.Name, &p.Age)
+	//err = row.Scan(&p.Name, &p.Age)
 	//if err != nil {
 	//	if err == sql.ErrNoRows {
 	//		log.Println("No row")
@@ -48,10 +43,39 @@ func main() {
 	//	}
 	//}
 	//fmt.Println(p.Name, p.Age)
+	//
+	//cmd = "SELECT * FROM persons"
+	//rows, _ := Db.Query(cmd)
+	//defer rows.Close()
+	//var pp []Person
+	//for rows.Next() {
+	//	var p Person
+	//	err := rows.Scan(&p.Name, &p.Age)
+	//	if err != nil {
+	//		log.Println(err)
+	//	}
+	//	pp = append(pp, p)
+	//}
+	//err = rows.Err()
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	//for _, p := range pp {
+	//	fmt.Println(p.Name, p.Age)
+	//}
 
-	cmd := "DELETE FROM persons WHERE name = ?"
-	_, err := DbConnection.Exec(cmd, "Nancy")
+	//U
+	//cmd := "UPDATE persons SET age = $1 WHERE name = $2"
+	//_, err := Db.Exec(cmd, 25, "Nancy")
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+
+	//D
+	cmd := "DELETE FROM persons WHERE name = $1"
+	_, err := Db.Exec(cmd, "Nancy")
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 }
