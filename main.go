@@ -1,52 +1,65 @@
 package main
 
-/*
-type Context interface {
-    Deadline() (deadline time.Time, ok bool)
-    Done() <-chan struct{}
-    Err() error
-    Value(key interface{}) interface{}
-}
-*/
-
 import (
-	"context"
 	"fmt"
-	"time"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
 )
 
-func longProcess(ctx context.Context, ch chan string) {
-	fmt.Println("開始")
-	time.Sleep(2 * time.Second)
-	fmt.Println("終了")
-	ch <- "実行結果"
-}
-
 func main() {
-	ch := make(chan string)                                // チャネルを作成
-	ctx := context.Background()                            // コンテキストを作成
-	ctx, cancel := context.WithTimeout(ctx, 1*time.Second) // 1秒間のタイムアウトを設定
+	//u, _ := url.Parse("http://example.com/search?a=1&b=2#top")
+	//fmt.Println(u.Scheme)
+	//fmt.Println(u.Host)
+	//fmt.Println(u.Path)
+	//fmt.Println(u.RawQuery)
+	//fmt.Println(u.Fragment)
+	//
+	//fmt.Println(u.IsAbs()) // 絶対URLならtrue
+	//fmt.Println(u.Query()) // クエリをマップで取得する
+	//
+	//url := &url.URL{}
+	//url.Scheme = "https:"
+	//url.Host = "google.com"
+	//q := url.Query()
+	//q.Set("q", "Golang") // クエリをセット
+	//url.RawQuery = q.Encode()
+	//
+	//fmt.Println(url)
 
-	defer cancel()
+	//GETメソッド
+	res, _ := http.Get("https://example.com")
 
-	go longProcess(ctx, ch) // 処理に２秒かかる
+	fmt.Println(res.StatusCode)
 
-	//cancel()
+	fmt.Println(res.Proto)
 
-L:
-	for {
-		select {
-		case <-ctx.Done():
-			fmt.Println("##########Error###########")
-			fmt.Println(ctx.Err())
-			break L
-		case s := <-ch:
-			fmt.Println(s)
-			fmt.Println("success")
-			break L
-		}
+	fmt.Println(res.Header["Date"])
+	fmt.Println(res.Header["Content-Type"])
 
+	fmt.Println(res.Request.Method)
+	fmt.Println(res.Request.URL)
+
+	defer res.Body.Close() // リソースを解放
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Print(string(body))
+
+	//------------------------------------
+	//POSTメソッド
+
+	vs := url.Values{}
+
+	vs.Add("id", "1")
+	vs.Add("message", "メッセージ")
+	fmt.Println(vs.Encode()) // => "id=1&message=%E3%83%A1%E3%83%83%E3%82%BB%E3%83@<dtp>{lb}%BC%E3%82%B8"
+
+	res, err := http.PostForm("https://example.com/", vs)
+	if err != nil {
+		log.Fatal(err)
 	}
+	defer res.Body.Close()
+	body, _ = ioutil.ReadAll(res.Body)
+	fmt.Print(string(body))
 
-	fmt.Println("ループ抜けた")
 }
