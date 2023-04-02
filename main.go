@@ -1,68 +1,91 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
-	"time"
+	"sort"
 )
 
-type A struct {
-	id int
+type Entry struct {
+	Name  string
+	Value int
 }
 
-type User struct {
-	ID      int       `json:"id"`
-	Name    string    `json:"name"`
-	Email   string    `json:"email"`
-	Created time.Time `json:"created"`
-	A       *A        `json:"A,omitempty"`
+type List []Entry
+
+func (l List) Len() int {
+	return len(l)
+}
+func (l List) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
 }
 
-func (u *User) UnmarshalJSON(b []byte) error {
-	type User2 struct {
-		Name string
+func (l List) Less(i, j int) bool {
+	if l[i].Value == l[j].Value {
+		return l[i].Name < l[j].Name
+	} else {
+		return l[i].Value < l[j].Value
 	}
-	var u2 User2
-	err := json.Unmarshal(b, &u2)
-	if err != nil {
-		fmt.Println(err)
-	}
-	u.Name = u2.Name + "!"
-	u.ID = 555
-	u.A = &A{id: 1}
-	return err
 }
-
-func (u *User) MarshalJSON() ([]byte, error) {
-	v, err := json.Marshal(&struct {
-		Name string
-	}{
-		Name: "Mr " + u.Name,
-	})
-	return v, err
-}
-
 func main() {
-	u := new(User)
-	u.ID = 1
-	u.Name = "test"
-	u.Email = "example@example.com"
-	u.Created = time.Now()
 
-	bs, err := json.Marshal(&u)
-	if err != nil {
-		log.Fatal(err)
+	i := []int{5, 3, 2, 4, 5, 6, 4, 8, 9, 8, 7, 10}
+	s := []string{"a", "z", "j"}
+
+	fmt.Println(i, s)
+
+	sort.Ints(i)    // [5 3 2 4 5 6 4 8 9 8 7 10] [a z j]
+	sort.Strings(s) // [a j z]
+
+	fmt.Println(i, s)
+
+	el := []Entry{
+		{"A", 20},
+		{"F", 40},
+		{"i", 30},
+		{"b", 10},
+		{"t", 15},
+		{"y", 30},
+		{"c", 30},
+		{"w", 30},
 	}
 
-	//fmt.Println(bs)
-	fmt.Println(string(bs))
-	//fmt.Printf("%T\n", bs) // []uint8
+	fmt.Println(el)
 
-	var u2 User
+	// 名前を昇順にソート
+	sort.Slice(el, func(i, j int) bool { return el[i].Name < el[j].Name })
+	fmt.Println("名前を昇順にソート")
+	fmt.Println(el)
+	// 値順にソート、名前順は上書きされる
+	sort.Slice(el, func(i, j int) bool { return el[i].Value < el[j].Value })
 
-	if err := json.Unmarshal(bs, &u2); err != nil {
-		fmt.Println(err)
+	fmt.Println("---------")
+	fmt.Println(el)
+	fmt.Println("---------")
+
+	// 名前順を維持して値順にソート
+	sort.SliceStable(el, func(i, j int) bool { return el[i].Name < el[j].Name })
+	sort.SliceStable(el, func(i, j int) bool { return el[i].Value < el[j].Value })
+
+	fmt.Println("---------")
+	fmt.Println(el)
+	fmt.Println("---------")
+
+	m := map[string]int{"ada": 1, "hoge": 4, "basha": 3, "poeni": 3}
+
+	lt := List{}
+	for k, v := range m {
+		e := Entry{k, v}
+		lt = append(lt, e)
 	}
-	fmt.Println(u2)
+
+	//sort.SliceStable(lt, func(i, j int) bool { return lt[i].Name < lt[j].Name })
+	//fmt.Println(lt)
+
+	sort.Sort(lt)
+
+	fmt.Println(lt)
+
+	sort.Sort(sort.Reverse(lt))
+	fmt.Println(lt)
+
 }
