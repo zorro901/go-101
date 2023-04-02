@@ -1,81 +1,30 @@
 package main
 
 import (
-	"database/sql"
-	"log"
+	"fmt"
 
-	_ "github.com/lib/pq"
+	"gopkg.in/go-ini/ini.v1"
 )
 
-var Db *sql.DB
+type ConfigList struct {
+	Port      int
+	DbName    string
+	SQLDriver string
+}
 
-var err error
+var Config ConfigList
 
-type Person struct {
-	Name string
-	Age  int
+func init() {
+	cfg, _ := ini.Load("config.ini")
+	Config = ConfigList{
+		Port:      cfg.Section("web").Key("port").MustInt(8080),
+		DbName:    cfg.Section("db").Key("name").String(),
+		SQLDriver: cfg.Section("db").Key("driver").String(),
+	}
 }
 
 func main() {
-	Db, err = sql.Open("postgres", "user=test_user dbname=testdb password=password sslmode=disable port=54322")
-	if err != nil {
-		log.Panic(err)
-	}
-	defer Db.Close()
-
-	//C
-	//cmd := "INSERT INTO persons (name, age) VALUES ($1, $2)"
-	//_, err := Db.Exec(cmd, "Nancy", 20)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-
-	//R
-	//cmd := "SELECT * FROM persons where age = $1"
-	//row := Db.QueryRow(cmd, 20)
-	//var p Person
-	//err = row.Scan(&p.Name, &p.Age)
-	//if err != nil {
-	//	if err == sql.ErrNoRows {
-	//		log.Println("No row")
-	//	} else {
-	//		log.Println(err)
-	//	}
-	//}
-	//fmt.Println(p.Name, p.Age)
-	//
-	//cmd = "SELECT * FROM persons"
-	//rows, _ := Db.Query(cmd)
-	//defer rows.Close()
-	//var pp []Person
-	//for rows.Next() {
-	//	var p Person
-	//	err := rows.Scan(&p.Name, &p.Age)
-	//	if err != nil {
-	//		log.Println(err)
-	//	}
-	//	pp = append(pp, p)
-	//}
-	//err = rows.Err()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//for _, p := range pp {
-	//	fmt.Println(p.Name, p.Age)
-	//}
-
-	//U
-	//cmd := "UPDATE persons SET age = $1 WHERE name = $2"
-	//_, err := Db.Exec(cmd, 25, "Nancy")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-
-	//D
-	cmd := "DELETE FROM persons WHERE name = $1"
-	_, err := Db.Exec(cmd, "Nancy")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
+	fmt.Printf("%T %v\n", Config.Port, Config.Port)
+	fmt.Printf("%T %v\n", Config.DbName, Config.DbName)
+	fmt.Printf("%T %v\n", Config.SQLDriver, Config.SQLDriver)
 }
