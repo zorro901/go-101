@@ -3,28 +3,50 @@ package main
 import (
 	"fmt"
 
-	"gopkg.in/go-ini/ini.v1"
+	"github.com/google/uuid"
 )
 
-type ConfigList struct {
-	Port      int
-	DbName    string
-	SQLDriver string
-}
-
-var Config ConfigList
-
-func init() {
-	cfg, _ := ini.Load("config.ini")
-	Config = ConfigList{
-		Port:      cfg.Section("web").Key("port").MustInt(8080),
-		DbName:    cfg.Section("db").Key("name").String(),
-		SQLDriver: cfg.Section("db").Key("driver").String(),
-	}
-}
-
 func main() {
-	fmt.Printf("%T %v\n", Config.Port, Config.Port)
-	fmt.Printf("%T %v\n", Config.DbName, Config.DbName)
-	fmt.Printf("%T %v\n", Config.SQLDriver, Config.SQLDriver)
+	uuidObj, _ := uuid.NewUUID()
+	fmt.Println("  ", uuidObj.String())
+
+	uuidObj2, _ := uuid.NewRandom()
+	fmt.Println("  ", uuidObj2.String())
+
+	fmt.Println("version1 NewUUID --")
+	for i := 0; i < 10; i++ {
+		uuidObj, _ := uuid.NewUUID()
+		fmt.Println("  ", uuidObj.String())
+	}
+
+	fmt.Println("version3 NewMD5 --")
+	for i := 0; i < 10; i++ {
+		uuidObj, _ := uuid.NewUUID()
+		data := []byte("wnw8olzvmjp0x6j7ur8vafs4jltjabi0")
+		uuidObj2 := uuid.NewMD5(uuidObj, data)
+		fmt.Println("  ", uuidObj2.String())
+	}
+
+	fmt.Println("version5 NewSHA1 --")
+	for i := 0; i < 10; i++ {
+		uuidObj, _ := uuid.NewUUID()
+		data := []byte("wnw8olzvmjp0x6j7ur8vafs4jltjabi0")
+		uuidObj2 := uuid.NewSHA1(uuidObj, data)
+		fmt.Println("  ", uuidObj2.String())
+	}
+
+	fmt.Println("version4 NewRandom --")
+	for i := 0; i < 10; i++ {
+		uuidObj, _ := uuid.NewRandom()
+		fmt.Println("  ", uuidObj.String())
+	}
+
+	u, err := uuid.NewRandom()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	uu := u.String()
+	fmt.Println(uu)
+
 }
