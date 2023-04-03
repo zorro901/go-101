@@ -1,28 +1,28 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
-func PrintSliceInts(i []int) {
-	for _, v := range i {
-		fmt.Println(v)
-	}
+type Stringer interface {
+	String() string
 }
 
-func PrintSliceString(s []string) {
-	for _, v := range s {
-		fmt.Println(v)
+func f[T Stringer](xs []T) []string {
+	result := []string{}
+	for _, x := range xs {
+		result = append(result, x.String())
 	}
+	return result
 }
 
-func PrintSlice[T any](s []T) {
-	for _, v := range s {
-		fmt.Println(v)
-	}
+type MyInt int
+
+func (i MyInt) String() string {
+	return strconv.Itoa(int(i))
 }
 
 func main() {
-	//PrintSliceInts([]int{1, 2, 3})
-	//PrintSliceString([]string{"a", "b", "c"})
-	PrintSlice[int]([]int{1, 2, 3})
-	PrintSlice([]string{"a", "b", "c"})
+	fmt.Println(f([]MyInt{1, 2, 3}))
 }
