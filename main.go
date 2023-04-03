@@ -2,17 +2,17 @@ package main
 
 import "fmt"
 
-type Vector[T any] []T
+type T[A any, B []C, C *A] struct {
+	a A
+	b B
+	c C
+}
 
-type IntVector Vector[int]
+func (t T[A, B, C]) m(x int) {
+
+}
 
 func main() {
-	var v Vector[int] = Vector[int]{10, 20, 30}
-	fmt.Println(v)
-
-	var v2 = Vector[float64]{1.3, 3.4, 5.6}
-	fmt.Println(v2)
-
-	v3 := IntVector{1, 2, 3}
-	fmt.Println(v3)
+	var t T[int, []*int, *int]
+	fmt.Printf("A: %T, B: %T, C: %T\n", t.a, t.b, t.c)
 }
