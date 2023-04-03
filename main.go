@@ -1,28 +1,24 @@
 package main
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
 
-type Stringer interface {
-	String() string
+type Number interface {
+	~int | ~int32 | ~int64 | ~float32 | ~float64
 }
 
-func f[T Stringer](xs []T) []string {
-	result := []string{}
-	for _, x := range xs {
-		result = append(result, x.String())
+func Max[T Number](x, y T) T {
+	if x >= y {
+		return x
 	}
-	return result
+	return y
 }
 
 type MyInt int
 
-func (i MyInt) String() string {
-	return strconv.Itoa(int(i))
-}
-
 func main() {
-	fmt.Println(f([]MyInt{1, 2, 3}))
+	fmt.Println(Max(1, 2))
+	fmt.Println(Max(1.1, 1.3))
+
+	var x, y MyInt = 1, 2
+	fmt.Println(Max[MyInt](x, y))
 }
