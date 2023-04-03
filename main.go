@@ -2,23 +2,17 @@ package main
 
 import "fmt"
 
-type Number interface {
-	~int | ~int32 | ~int64 | ~float32 | ~float64
-}
+type Vector[T any] []T
 
-func Max[T Number](x, y T) T {
-	if x >= y {
-		return x
-	}
-	return y
-}
-
-type MyInt int
+type IntVector Vector[int]
 
 func main() {
-	fmt.Println(Max(1, 2))
-	fmt.Println(Max(1.1, 1.3))
+	var v Vector[int] = Vector[int]{10, 20, 30}
+	fmt.Println(v)
 
-	var x, y MyInt = 1, 2
-	fmt.Println(Max[MyInt](x, y))
+	var v2 = Vector[float64]{1.3, 3.4, 5.6}
+	fmt.Println(v2)
+
+	v3 := IntVector{1, 2, 3}
+	fmt.Println(v3)
 }
