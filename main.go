@@ -6,40 +6,38 @@ import (
 	"sync"
 )
 
-func memConsumed() uint64 {
-	runtime.GC() // 使われていないメモリを解放する
-
-	var s runtime.MemStats
-
-	runtime.ReadMemStats(&s) // メモリの状態を取得
-
-	return s.Sys
+func Hello(wg *sync.WaitGroup, id int) {
+	defer wg.Done()
+	fmt.Printf("Hello Goroutine %d\n", id)
 }
 
 func main() {
-	var ch <-chan interface{}
 	var wg sync.WaitGroup
 
-	noop := func() {
-		wg.Done()
-		<-ch // チャネルの受信を永遠に待つ
-	}
+	//wg.Add(1)
+	//go func() {
+	//	defer wg.Done()
+	//	fmt.Println("1st Goroutine Start")
+	//	time.Sleep(1 * time.Second)
+	//	fmt.Println("1st Goroutine Done")
+	//}()
+	//
+	//wg.Add(1)
+	//go func() {
+	//	defer wg.Done()
+	//	fmt.Println("2st Goroutine Start")
+	//	time.Sleep(1 * time.Second)
+	//	fmt.Println("2st Goroutine Done")
+	//}()
+	//
+	//wg.Wait()
 
-	const numGoroutines = 1000000
+	var CPU int = runtime.NumCPU()
 
-	wg.Add(numGoroutines)
-
-	before := memConsumed()
-
-	for i := 0; i < numGoroutines; i++ {
-		go noop()
+	wg.Add(CPU)
+	for i := 0; i < CPU; i++ {
+		go Hello(&wg, i)
 	}
 
 	wg.Wait()
-
-	after := memConsumed()
-
-	// 8.878kb
-	fmt.Printf("%.3fkb", float64(after-before)/numGoroutines/1000) // 小数点3桁まで表示
-
 }
