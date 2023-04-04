@@ -1,27 +1,28 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
-type Set[T comparable] map[T]struct{}
-
-func NewSet[T comparable](xs ...T) Set[T] {
-	s := make(Set[T])
-	for _, v := range xs {
-		s.Add(v)
-	}
-	return s
+func sayHello(wg *sync.WaitGroup) {
+	defer wg.Done()
+	fmt.Println("Hello")
 }
-
-func (s Set[T]) Add(x T) {
-	s[x] = struct{}{}
-}
-
-func (s Set[T]) Remove(x T) {
-	delete(s, x)
-}
-
 func main() {
-	s := NewSet(1, 2, 3)
-	s.Remove(3)
-	fmt.Println(s)
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+
+	go sayHello(&wg) // ゴルーチンの起動処理中にmainゴルーチンが終了するので待機をmainに追加
+
+	wg.Add(1)
+	// フォークジョイン、ゴルーチンは同期処理を保証しない
+	go func() {
+		defer wg.Done()
+		fmt.Println("Hello")
+	}()
+	//time.Sleep(2 * time.Second)
+
+	wg.Wait() // Addカウンターが0になるまで待機
 }
