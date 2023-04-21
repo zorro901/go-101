@@ -6,16 +6,20 @@ import (
 	"go-101/repository"
 	"go-101/router"
 	"go-101/usecase"
+	"go-101/validator"
 )
 
 func main() {
 	db := db.NewDB()
 
+	userValidator := validator.NewUserValidator()
+	taskValidator := validator.NewTaskValidator()
+
 	userRepository := repository.NewUserRepository(db)
 	tasksRepository := repository.NewTaskRepository(db)
 
-	userUseCase := usecase.NewUserUseCase(userRepository)
-	tasksUseCase := usecase.NewTaskUseCase(tasksRepository)
+	userUseCase := usecase.NewUserUseCase(userRepository, userValidator)
+	tasksUseCase := usecase.NewTaskUseCase(tasksRepository, taskValidator)
 
 	userController := controller.NewUserController(userUseCase)
 	tasksController := controller.NewTaskController(tasksUseCase)

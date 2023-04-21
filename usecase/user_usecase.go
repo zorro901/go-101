@@ -4,6 +4,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"go-101/model"
 	"go-101/repository"
+	"go-101/validator"
 	"golang.org/x/crypto/bcrypt"
 	"os"
 	"time"
@@ -16,13 +17,18 @@ type IUserUseCase interface {
 
 type userUseCase struct {
 	ur repository.IUserRepository
+	uv validator.IUserValidator
 }
 
-func NewUserUseCase(ur repository.IUserRepository) IUserUseCase {
-	return &userUseCase{ur}
+func NewUserUseCase(ur repository.IUserRepository, uv validator.IUserValidator) IUserUseCase {
+	return &userUseCase{ur, uv}
 }
 
 func (uu *userUseCase) SignUp(user model.User) (model.UserResponse, error) {
+	// UserObjectのバリデーションチェック
+	if err := uu.uv.UserValidate(user); err != nil {
+		return model.UserResponse{}, err
+	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	if err != nil {
 		return model.UserResponse{}, err
@@ -39,6 +45,11 @@ func (uu *userUseCase) SignUp(user model.User) (model.UserResponse, error) {
 }
 
 func (uu *userUseCase) Login(user model.User) (string, error) {
+	// UserObjectのバリデーションチェック
+	if err := uu.uv.UserValidate(user); err != nil {
+		return "", err
+	}
+
 	storedUser := model.User{}
 	if err := uu.ur.GetUserByEmail(&storedUser, user.Email); err != nil {
 		return "", err
