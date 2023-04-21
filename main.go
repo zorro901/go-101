@@ -10,9 +10,16 @@ import (
 
 func main() {
 	db := db.NewDB()
+
 	userRepository := repository.NewUserRepository(db)
+	tasksRepository := repository.NewTaskRepository(db)
+
 	userUseCase := usecase.NewUserUseCase(userRepository)
+	tasksUseCase := usecase.NewTaskUseCase(tasksRepository)
+
 	userController := controller.NewUserController(userUseCase)
-	e := router.NewRouter(userController)
+	tasksController := controller.NewTaskController(tasksUseCase)
+
+	e := router.NewRouter(userController, tasksController)
 	e.Logger.Fatal(e.Start(":8080")) // エラーが発生したらログ情報を生成して終了する
 }
